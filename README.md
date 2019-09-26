@@ -1,34 +1,38 @@
-# DRL applied to "Reacher" Environment 
-This repo trains a Deep Reinforcement Learning (DRL) agent to solve the Unity ML-Agents "Reacher" environment. 
-The motivation for this program was the 2nd project in the Udacity Deep Reinforcement Learning 
+# DRL applied to "Tennis" Environment 
+This repo trains a Deep Reinforcement Learning (DRL) agent to solve the Unity ML-Agents "Tennis" environment. 
+The motivation for this program was the 3rd project in the Udacity Deep Reinforcement Learning 
 [Nanodegree](https://www.udacity.com/course/deep-reinforcement-learning-nanodegree--nd893). 
 
 ## Project Details
-### Reacher Environment
-The [Reacher](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher) 
-environment provided by [Unity](https://unity3d.com/machine-learning/) contains a double-jointed arm can move to target 
-locations. A reward of +0.1 is provided for each step that the agent's hand is in the goal location. 
-Thus, the goal of the DRL agent is to maintain its position at the target location for as many time steps as possible.
+### Tennis Environment
+The [Tennis](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#tennis) 
+environment provided by [Unity](https://unity3d.com/machine-learning/) has two agents that control rackets to bounce a 
+ball over a net. If an agent hits the ball over the net, it receives a reward of +0.1. If an agent lets a ball hit the 
+ground or hits the ball out of bounds, it receives a reward of -0.01. Thus, the goal of each agent is to keep the ball 
+in play.   
+The observation space consists of 8 variables corresponding to the position and velocity of the ball and racket. Each 
+agent receives its own, local observation. Two continuous actions are available, corresponding to movement toward 
+(or away from) the net, and jumping.  
 
-The observation space consists of 33 variables corresponding to position, rotation, velocity, and angular velocities of 
-the arm. Each action is a vector with four numbers, corresponding to torque applicable to two joints. Every entry in the 
-action vector should be a number between -1 and 1.   
+![Trained Agent](https://user-images.githubusercontent.com/10624937/42135623-e770e354-7d12-11e8-998d-29fc74429ca2.gif)
 
-The gif below illustrate the environment with 10 identical arms.  This repo solves the environment with a single arm.  
+### Solving the Environment
+The task is episodic, and in order to solve the environment, your agents must get an average score of +0.5 
+(over 100 consecutive episodes, after taking the maximum over both agents). Specifically,
 
-![Trained Agent](https://user-images.githubusercontent.com/10624937/43851024-320ba930-9aff-11e8-8493-ee547c6af349.gif)
+- After each episode, we add up the rewards that each agent received (without discounting), to get a score for each 
+agent. This yields 2 (potentially different) scores. We then take the maximum of these 2 scores.
+- This yields a single score for each episode.  
 
-### Solving the Environment (Single Arm)
-The task is episodic, and in order to solve the environment, the agent must get an average score of +30 over 100 
-consecutive episodes.
+The environment is considered solved, when the average (over 100 episodes) of those scores is at least +0.5.
 
 ## Getting Started 
-This repo is setup for a Windows 10 Home 64-bit environment.  If you prefer 32-bit Windows, OS X or Linux, please see 
-the source Udacity [repo](https://github.com/udacity/deep-reinforcement-learning/tree/master/p2_continuous-control).
+This repo is setup for a 64-bit Windows 10 Home or AWS environment.  If you prefer another os, please see the source 
+Udacity [repo](https://github.com/udacity/deep-reinforcement-learning/tree/master/p3_collab-compet).
 Note to determine if your Windows is 64-bit or 32-bit follow this 
 [link](https://support.microsoft.com/en-us/help/827218/how-to-determine-whether-a-computer-is-running-a-32-bit-version-or-64).
-If you install one of the other environments, the following operations should be the same.  Only the Reacher environment
-downloaded into the `p2_continuous-control` folder will be different. 
+If you install one of the other environments, the following operations should be the same.  Only the Tennis environment
+downloaded into the `p3_collab-compet` folder will be different. 
 
 ### Python 'drlnd' Virtual Environment (venv)
 
@@ -50,11 +54,12 @@ activate it.
 This [article](https://towardsdatascience.com/how-to-install-openai-gym-in-a-windows-environment-338969e24d30) may also 
 be very helpful.  This was confirmed to work in Windows 10 Home.  
 
-4. Follow the instructions in [this repository](https://github.com/openai/gym) to perform a minimal install of OpenAI gym.  
+4. Follow the instructions in this [repo](https://github.com/openai/gym) to perform a minimal install of OpenAI gym.  
 	- Next, install the **classic control** environment group by following the instructions [here](https://github.com/openai/gym#classic-control).
 	- Then, install the **box2d** environment group by following the instructions [here](https://github.com/openai/gym#box2d).
 	
-5. Clone the repository (if you haven't already!), and navigate to the `python/` folder.  Then, install several dependencies.  
+5. Clone the repository (if you haven't already!), and navigate to the `python/` folder.  Then, install several 
+dependencies.  
     ```bash
     git clone https://github.com/udacity/deep-reinforcement-learning.git
     cd deep-reinforcement-learning/python

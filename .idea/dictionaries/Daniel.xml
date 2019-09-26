@@ -2,10 +2,14 @@
   <dictionary name="Daniel">
     <words>
       <w>cuda</w>
+      <w>drlnd</w>
       <w>hyperparameters</w>
+      <w>nanodegree</w>
       <w>ornstein</w>
+      <w>udacity</w>
       <w>uhlenbeck</w>
       <w>unityagents</w>
+      <w>venv</w>
     </words>
   </dictionary>
 </component>
