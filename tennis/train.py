@@ -19,6 +19,8 @@ def make_plot(show=False):
 
     import matplotlib.pyplot as plt
 
+    target = 30
+
     # Load the previous scores and calculated running mean of 100 runs
     # ---------------------------------------------------------------------------------------
     with np.load('scores.npz') as data:
@@ -35,7 +37,7 @@ def make_plot(show=False):
     plt.scatter(x, scores, s=2, c='k', label='Raw Scores', zorder=4)
     plt.plot(x[99:], rolling_mean, lw=2, label='Rolling Mean', zorder=3)
     plt.scatter(x_max, rolling_mean[-1], c='g', s=40, marker='*', label='Episode {}'.format(x_max), zorder=5)
-    plt.plot([0, x_max], [30, 30], lw=1, c='grey', ls='--', label='Target Score = 30', zorder=1)
+    plt.plot([0, x_max], [target, target], lw=1, c='grey', ls='--', label='Target Score = {}'.format(target), zorder=1)
     plt.plot([x_max, x_max], [y_min, rolling_mean[-1]], lw=1, c='grey', ls='--', label=None, zorder=2)
     plt.ylabel('Score')
     plt.xlabel('Episode #')
@@ -63,26 +65,26 @@ def train(agent, env, n_episodes=2000, max_t=1000):
     scores_window = deque(maxlen=100)
     brain_name = env.brain_names[0]
     for i_episode in range(1, n_episodes + 1):
-        brain_info = env.reset(train_mode=True)[brain_name]
-        state = brain_info.vector_observations[0]
+        env_info = env.reset(train_mode=True)[brain_name]
+        states = env_info.vector_observations
         score = 0
         for t in range(max_t):
-            action = agent.act(state=state)
-            brain_info = env.step(action)[brain_name]
-            next_state = brain_info.vector_observations[0]
-            reward = brain_info.rewards[0]
-            done = brain_info.local_done[0]
-            agent.step(state, action, reward, next_state, done)
-            state = next_state
-            score += reward
-            if done:
+            actions = agent.act(state=states)
+            env_info = env.step(actions)[brain_name]
+            next_states = env_info.vector_observations
+            rewards = env_info.rewards
+            done_values = env_info.local_done
+            agent.step(states, actions, rewards, next_states, done_values)
+            states = next_states
+            score += rewards
+            if np.any(done_values):
                 break
         scores_window.append(score)  # save most recent score
         scores.append(score)  # save most recent score
         print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)), end="")
         if i_episode % 100 == 0:
             print('\rEpisode {}\tAverage Score: {:.2f}'.format(i_episode, np.mean(scores_window)))
-        if np.mean(scores_window) >= 30.0:
+        if np.mean(scores_window) >= 0.5:
             print('\nEnvironment solved in {:d} episodes!\tAverage Score: {:.2f}'.format(i_episode,
                                                                                          np.mean(scores_window)))
             break
@@ -105,8 +107,18 @@ def setup(env):
     brain_name = env.brain_names[0]
     brain = env.brains[brain_name]
     env_info = env.reset(train_mode=True)[brain_name]
+
+    # number of agents
+    num_agents = len(env_info.agents)
+    print('Number of agents:', num_agents)
+
+    # size of each action
     action_size = brain.vector_action_space_size
+    print('Size of each action:', action_size)
+
+    # examine the state space
     state_size = env_info.vector_observations.shape[1]
+    print('State space per agent: {}'.format(state_size))
 
     # Setup the agent and return it
     # -----------------------------------------------------------------------------------

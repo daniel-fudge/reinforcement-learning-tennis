@@ -11,8 +11,10 @@ from unityagents import UnityEnvironment
 
 # !!!!!!!!! YOU MAY NEED TO EDIT THIS !!!!!!!!!!!!!!!
 if platform.system() == 'Windows':
+    print("Loading Windows x86 64-bit Tennis environment.")
     env = UnityEnvironment(file_name=r"Tennis_Windows_x86_64\Tennis.exe")
 elif platform.system() == 'Linux':
+    print("Loading Linux Tennis environment.")
     env = UnityEnvironment(file_name=r"Tennis_Linux\Tennis.exe")
 else:
     print("Only Windows and Linux supported.")
