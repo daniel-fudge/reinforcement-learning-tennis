@@ -7,6 +7,7 @@ Note:  You need to verify the env path is correct for you PC and OS.
 from tennis.train import make_plot, setup, train
 import os
 import platform
+import torch
 from unityagents import UnityEnvironment
 
 # !!!!!!!!! YOU MAY NEED TO EDIT THIS !!!!!!!!!!!!!!!
@@ -19,6 +20,8 @@ elif platform.system() == 'Linux':
 else:
     print("Only Windows and Linux supported.")
     raise RuntimeError
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 if __name__ == "__main__":
 
