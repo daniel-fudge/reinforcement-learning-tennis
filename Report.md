@@ -1,14 +1,19 @@
-# Project 2: Reacher - Report
+# Project 3: Tennis - Report
 
 ## Introduction
-This report is written to satisfy the `Report` component of the project 2 rubric and is divided into three sections per 
-the [rubric](https://review.udacity.com/#!/rubrics/1890/view).
+This report is written to satisfy the `Report` component of the project 3 rubric and is divided into three sections per 
+the [rubric](https://review.udacity.com/#!/rubrics/1891/view).  
+
+A very interesting aspect of this project was the near complete reuse from project 2, which solved the Reacher 
+environment.  The exact same agents were used with the exact same hyperparameters.  The only difference was a list of 
+two agents, one for each player, and the replay buffer of each agent was populated with the experiences of both players.
+The Reacher solution can be found in [this](https://github.com/daniel-fudge/reinforcement-learning-reacher) repo.
 
 ## Learning Algorithm  
 As defined in the rubric, this section _"clearly describes the learning algorithm, along with the chosen hyperparameters.
 It also describes the model architectures for any neural networks"_.
 
-This implementation uses a custom Python package `reacher` contained in this repository.  Within this package exists 3 
+This implementation uses a custom Python package `tennis` contained in this repository.  Within this package exists 3 
 submodules `model`, `ddpg_agent` and `train`.
 
 ### `model` Submodule
@@ -33,10 +38,10 @@ The `ddpg_agent` submodule defines 3 classes; `Agent`, `ReplayBuffer` and `OUNoi
 The `ReplayBuffer` class stores the experience tuples with its `add` method and allows them to be sampled with its 
 `sample` method to perform experience replay learning.  
 
-The `Agent` class creates a local and target `reacher.model.Critic` class; `self.critic_local` and `self.critic_target`. 
-As well as a local and target `reacher.model.Actor` class; `self.actor_local` and `self.actor_target`, with the 
+The `Agent` class creates a local and target `tennis.model.Critic` class; `self.critic_local` and `self.critic_target`. 
+As well as a local and target `tennis.model.Actor` class; `self.actor_local` and `self.actor_target`, with the 
 `torch.optim.adam` optimizer applied to both local networks.  It also employs experience replay with `self.memory` using 
-the `reacher.ddpg_agent.ReplayBuffer`.  
+the `tennis.ddpg_agent.ReplayBuffer`.  
 
 The `OUNoise` class simply defines an Ornstein-Uhlenbeck noise process to be applied to the actions returned from the 
 `Agent.act` method to aid learning.
@@ -59,17 +64,17 @@ The `train` submodule brings the `model` and `ddpg_agent` submodules together to
 
 The `train.setup` function simply initializes the environment and agent.  
 The `train.train` function takes the given environment and agent, then trains the agent for the given maximum number of 
-episodes or until the running mean error for 100 episode is 30 or greater.  Once the training is complete the weights 
-are saved as `checkpoint_actor.pth` and `checkpoint_critic.pth` and the scores are saved as a NumPy object as 
-`scores.npz`.
+episodes or until the running mean error for 100 episode is 0.5 or greater.  Once the training is complete the weights 
+are saved as `checkpoint_actor_[player].pth` and `checkpoint_critic_[player.pth]` for player 1 and 2 and the scores are 
+saved as a NumPy object as `scores.npz`.
 
 For each time step, the function first determines the action `a` from the `Agent.act` method and the current state `s`.  
 Then queries the environment to determine the resulting next state `s'`, reward `r` and if the episode is `done`.  This 
 combines to make an experience `(s, a, r, s', done)` tuple.  
 
-The `Agent.step` method then adds this experience to memory and the `Agent.learn` method is called with a random sample 
-of experience tuples from memory to update the Q-Networks as described above.  This is repeated for each time step until 
-a True `done` value is returned from the environment.  
+The `Agent.step` method then adds the experiences of both players to memory and the `Agent.learn` method is called with 
+a random sample of experience tuples from memory to update the Q-Networks as described above.  This is repeated for each
+time step until a True `done` value is returned from the environment.  
 
 The `Agent.make_plot` submodule simply reads the `scores.npz` file and generates a plot of the reward evolution.  
 
@@ -92,7 +97,7 @@ actions between -1 and 1.
 
 ## Plot of Rewards  
 The image below illustrates the score of each episode as well as the running average score for the last 100 episodes.
-As you can see, the algorithm solves the problem in 317 episodes by hitting a running average of +30.  Note that
+As you can see, the algorithm solves the problem in 1463 episodes by hitting a running average of +0.5.  Note that
 the score is the sum of the rewards the agent receives in an episode without discounting.
 
 ![Scores](scores.png)

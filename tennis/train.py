@@ -19,7 +19,7 @@ def make_plot(show=False):
 
     import matplotlib.pyplot as plt
 
-    target = 30
+    target = 0.5
 
     # Load the previous scores and calculated running mean of 100 runs
     # ---------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ def make_plot(show=False):
     plt.xlabel('Episode #')
     plt.legend()
     plt.xlim([0, x_max + 5])
-    plt.ylim(bottom=y_min)
+    plt.ylim(bottom=0)
     if show:
         plt.show()
     else:
