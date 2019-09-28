@@ -15,7 +15,7 @@ if platform.system() == 'Windows':
     env = UnityEnvironment(file_name=r"Tennis_Windows_x86_64\Tennis.exe")
 elif platform.system() == 'Linux':
     print("Loading Linux Tennis environment.")
-    env = UnityEnvironment(file_name=r"Tennis_Linux_NoVis\Tennis.x86_64")
+    env = UnityEnvironment(file_name=r"Tennis_Linux_NoVis/Tennis.x86_64")
 else:
     print("Only Windows and Linux supported.")
     raise RuntimeError
