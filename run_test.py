@@ -30,12 +30,12 @@ if __name__ == "__main__":
 
     # Setup the environment and agent
     # -----------------------------------------------------------------------------------
-    agent = setup(env)
+    agents = setup(env)
 
     # Perform the training
     # -----------------------------------------------------------------------------------
     print('Training the agent.')
-    train(agent=agent, env=env)
+    train(agents=agents, env=env)
 
     # Make some pretty plots
     # -----------------------------------------------------------------------------------

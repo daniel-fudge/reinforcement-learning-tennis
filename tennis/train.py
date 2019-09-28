@@ -51,11 +51,11 @@ def make_plot(show=False):
     plt.close()
 
 
-def train(agent, env, n_episodes=2000, max_t=1000):
+def train(agents, env, n_episodes=2000, max_t=1000):
     """This function trains the given agent in the given environment.
 
     Args:
-        agent (Agent):  The agent to train.
+        agents (list of Agent):  The 2 agents to train.
         env (unityagents.UnityEnvironment):  The training environment
         n_episodes (int): maximum number of training episodes
         max_t (int): maximum number of time steps per episode
@@ -69,14 +69,15 @@ def train(agent, env, n_episodes=2000, max_t=1000):
         states = env_info.vector_observations
         score = 0
         for t in range(max_t):
-            actions = agent.act(state=states)
+            actions = [agents[i].act(state=states[i]) for i in range(2)]
             env_info = env.step(actions)[brain_name]
             next_states = env_info.vector_observations
             rewards = env_info.rewards
             done_values = env_info.local_done
-            agent.step(states, actions, rewards, next_states, done_values)
+            for i in range(2):
+                agents[i].step(states, actions, rewards, next_states, done_values)
             states = next_states
-            score += rewards
+            score += max(rewards)
             if np.any(done_values):
                 break
         scores_window.append(score)  # save most recent score
@@ -90,8 +91,9 @@ def train(agent, env, n_episodes=2000, max_t=1000):
             break
 
     # Save models weights and scores
-    torch.save(agent.actor_target.state_dict(), 'checkpoint_actor.pth')
-    torch.save(agent.critic_target.state_dict(), 'checkpoint_critic.pth')
+    for i in range(2):
+        torch.save(agents[i].actor_target.state_dict(), 'checkpoint_actor_{}.pth'.format(i + 1))
+        torch.save(agents[i].critic_target.state_dict(), 'checkpoint_critic_{}.pth'.format(i + 1))
     np.savez('scores.npz', scores)
 
 
@@ -100,6 +102,9 @@ def setup(env):
 
     Args:
         env (unityagents.UnityEnvironment):  The training environment
+
+    Returns:
+        list of Agent:  Agents for player #1 and #2
     """
     # Setup the environment and print of some information for reference
     # -----------------------------------------------------------------------------------
@@ -122,5 +127,5 @@ def setup(env):
 
     # Setup the agent and return it
     # -----------------------------------------------------------------------------------
-    print('Setting up the agent.')
-    return Agent(state_size=state_size, action_size=action_size, random_seed=42)
+    print('Setting up agent #1 and #2.')
+    return [Agent(state_size=state_size, action_size=action_size, random_seed=42) for _ in range(2)]

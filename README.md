@@ -79,9 +79,10 @@ The raw scores are save as `scores.npz` and can be plotted and saved as `scores.
     python plot.py  
 
 ### Saved model Weights
-The trained model is saved as `checkpoint.pth` in the root directory and can be loaded with the command:  
+The trained models are saved as `checkpoint_[type]_[player].pth` in the root directory where `[type]` is either "actor"
+or "critic" and `[player]` is either "1" or "2".  Either can be loaded with the command:  
 
-    agent.qnetwork_local.load_state_dict(torch.load('checkpoint.pth'))
+    agent.qnetwork_local.load_state_dict(torch.load('checkpoint_[type]_[player].pth'))
     
 ### Report
 A [report](Report.md) providing a description of the implementation, a plot of the rewards and ideas for future work can
