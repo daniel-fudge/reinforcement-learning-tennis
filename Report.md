@@ -110,4 +110,8 @@ The [paper](https://arxiv.org/abs/1604.06778) by Duan et al. also evaluated eigh
 that would be very interesting to investigate.  However the Proximal Policy Optimization (PPO) discussed by 
 [OpenAI](https://openai.com/blog/openai-baselines-ppo/) interests me the most due to the promised ease of tuning.  I 
 believe this may be extremely important in new applications where hyperparameter tuning may become very costly and error
-prone.
+prone.  
+This project was executed on AWS with GPUs and local Windows 10 CPU.  The CPU and GPU speeds were 0.84 and 0.62 seconds 
+per episode respectively.  I suspect the modest speed advantage of the GPU was due to the relative small size of the 
+network.  Another experiment would be to leverage AWS to perform many parallel episodes and network updates.  This could 
+be performed in a synchronous or asynchronous manner.  

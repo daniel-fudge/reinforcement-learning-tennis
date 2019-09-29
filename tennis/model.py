@@ -4,8 +4,8 @@ import torch.nn as nn
 import torch.nn.functional as nn_f
 
 # Set Architecture hyperparameters
-FC1_UNITS = 256  # Size if 1st Hidden layer
-FC2_UNITS = 128  # Size if 2nd Hidden layer
+FC1_UNITS = 128  # Size if 1st Hidden layer
+FC2_UNITS = 64   # Size if 2nd Hidden layer
 
 
 def hidden_init(layer):

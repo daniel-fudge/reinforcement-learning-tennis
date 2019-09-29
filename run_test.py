@@ -22,7 +22,12 @@ else:
     print("Only Windows and Linux supported.")
     raise RuntimeError
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+if torch.cuda.is_available():
+    device = torch.device("cuda:0")
+    print("GPU activated.")
+else:
+    device = torch.device("cpu")
+    print("CPU activated.")
 
 if __name__ == "__main__":
 
@@ -41,9 +46,7 @@ if __name__ == "__main__":
     print('Training the agent.')
     start = time()
     train(agents=agents, env=env)
-    delta = time() - start
-    minutes = int(delta / 60.0)
-    print("Training Time:  {} minutes, {} seconds".format(minutes, delta - minutes * 60))
+    print("Training Time:  {:.1f} minutes".format((time() - start)/60.0))
 
     # Make some pretty plots
     # -----------------------------------------------------------------------------------
